@@ -168,10 +168,7 @@ namespace HuyNK_Series_SDK.Plugins
 
         private float GetComboDamage(Obj_AI_Hero Enemy)
         {
-            return
-                (Q.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.Q) : 0)+
-                (W.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.W) : 0)+
-                (R.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.R) : 0);
+           
         }
 
         private void Combo()
