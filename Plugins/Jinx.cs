@@ -173,44 +173,13 @@ namespace HuyNK_Series_SDK.Plugins
 
         private void Combo()
         {
-            if (MenuProvider.MainMenu["Combo"]["UseE"].GetValue<MenuBool>().Value && E.isReadyPerfectly())
-            {
-                if (!ObjectManager.Player.IsRanged)
-                    E.CastOnBestTarget();
-            }
-
-            if (MenuProvider.MainMenu["Combo"]["UseQ"].GetValue<MenuBool>().Value && Q.isReadyPerfectly())
-            {
-                if (!ObjectManager.Player.IsWindingUp)
-                    Q.CastOnBestTarget();
-            }
-
-            if (MenuProvider.MainMenu["Combo"]["UseW"].GetValue<MenuBool>().Value && W.isReadyPerfectly())
-            {
-                if (!ObjectManager.Player.IsRanged)
-                    W.CastOnBestTarget();
-            }
+           
                
         }
 
         private void Harass()                                                                         
         {
-            if (MenuProvider.MainMenu["Combo"]["UseE"].GetValue<MenuBool>().Value && E.isReadyPerfectly())
-            {
-                if (!ObjectManager.Player.CanCast)
-                    E.CastOnBestTarget();
-            }
-            if (MenuProvider.MainMenu["Combo"]["UseQ"].GetValue<MenuBool>().Value && Q.isReadyPerfectly())
-            {
-                if (!ObjectManager.Player.IsWindingUp)
-                    Q.CastOnBestTarget();
-            }
-
-            if (MenuProvider.MainMenu["Combo"]["UseW"].GetValue<MenuBool>().Value && W.isReadyPerfectly())
-            {
-                if (!ObjectManager.Player.IsRanged)
-                    W.CastOnBestTarget();
-            }
+            
            
         }
 
