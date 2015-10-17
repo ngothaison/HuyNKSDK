@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-
+using System.Windows.Forms;
 using LeagueSharp;
 using LeagueSharp.Common;
+
 using LeagueSharp.SDK.Core;
 using LeagueSharp.SDK.Core.UI.IMenu.Values;
 using LeagueSharp.SDK.Core.Enumerations;
@@ -16,6 +17,7 @@ using Color = System.Drawing.Color;
 
 using SharpDX;
 using HitChance = LeagueSharp.SDK.Core.Enumerations.HitChance;
+using KeyBindType = LeagueSharp.SDK.Core.Enumerations.KeyBindType;
 using Menu = LeagueSharp.SDK.Core.UI.IMenu.Menu;
 using SkillshotType = LeagueSharp.SDK.Core.Enumerations.SkillshotType;
 using Spell = LeagueSharp.SDK.Core.Wrappers.Spell;
@@ -53,11 +55,11 @@ namespace HuyNK_Series_SDK.Plugins
            //Set key
            
             Menu Skill = new Menu("Keys", "Cài đặt kill");
-            Skill.Add(new MenuSlider("Q_Max_Range", "Q khi đủ tầm", 1050, 500, 1200));
+            Skill.Add(new MenuSlider("Q_Max_Range", "Q khi đủ tầm", 650, 500, 1200));
             Skill.Add(new MenuSlider("W_Max_Range", "W khi đủ tầm", 900, 500, 1500));
-            Skill.Add(new MenuSlider("R_Min_Range", "Tầm đánh R nhỏ nhât", 1000, 300, 1200));
-            Skill.Add(new MenuSlider("R_Max_Range", "Tầm đánh R lớn nhất", 1000, 500, 20000));
-       
+            Skill.Add(new MenuSlider("R_Min_Range", "Tầm đánh R nhỏ nhât", 300, 300, 1200));
+            Skill.Add(new MenuSlider("R_Max_Range", "Tầm đánh R lớn nhất", 20000, 500, 20000));
+           // Skill.Add(new MenuKeyBind("Combo_WE", "Combo WE", Keys.E, KeyBindType.Press));
             // Combo
             Menu ComboMenu = new Menu("Combo", "Combo");
             ComboMenu.Add(new MenuBool("UseQ", "Dùng  Q", true));
@@ -65,6 +67,7 @@ namespace HuyNK_Series_SDK.Plugins
             ComboMenu.Add(new MenuBool("UseE", "Dùng E", true));
             ComboMenu.Add(new MenuBool("UseR", "Dùng R", true));
             ComboMenu.Add(new MenuBool("R_Nearest_Killable", "Giết khi gần Chết"));
+            
             //Cấu rỉa
             Menu HarassMenu = new Menu("Harass", "Cấu Rỉa");
             HarassMenu.Add(new MenuBool("UseQ", "Dùng Q", true));
@@ -102,7 +105,7 @@ namespace HuyNK_Series_SDK.Plugins
             DrawingsMenu.Add(new MenuBool("DrawR", "Draw R Range"));
             DrawingsMenu.Add(new MenuColor("RColor", "Color", SharpDX.Color.Blue));
             DrawingsMenu.Add(new MenuBool("Draw_R_Killable", "Tìm Muc tiêu ULti"));
-            DrawingsMenu.Add(new MenuBool("Dont_R", "Không dùng R cho tướng"));
+            
          
             DrawingsMenu.Add(new MenuSeparator("Dseparator", "DamageIndicator"));
 
@@ -136,7 +139,7 @@ namespace HuyNK_Series_SDK.Plugins
         private void Spellbook_OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
         {
             if (!ObjectManager.Player.IsDead && sender.Owner.IsMe)
-                if (args.Slot == SpellSlot.Q)
+                if (args.Slot == SpellSlot.E)
                     if (LastECastTime > Environment.TickCount - 500)
                         args.Process = false;
                     else
@@ -150,14 +153,17 @@ namespace HuyNK_Series_SDK.Plugins
                 //check if player is dead
                 if (ObjectManager.Player.IsDead) return;
 
-                //adjust range
-                if (Q.IsReady())
+             
+                
+            
+            //adjust range
+                    if (Q.IsReady())
                     Q.Range = MenuProvider.MainMenu["Keys"]["Q_Max_Range"].GetValue<MenuSlider>().Value;
                 if (W.IsReady())
                     W.Range = MenuProvider.MainMenu["Keys"]["W_Max_Range"].GetValue<MenuSlider>().Value;
                 if (R.IsReady())
                     R.Range = MenuProvider.MainMenu["Keys"]["R_Max_Range"].GetValue<MenuSlider>().Value;
-
+                Killsteal();
 
                 switch (Orbwalker.ActiveMode)
                 {
@@ -168,13 +174,14 @@ namespace HuyNK_Series_SDK.Plugins
                         Harass();
                         break;
                     case OrbwalkerMode.LaneClear:
-                        LaneClear();
-                        JungleClear();
+                       Orbwalker.Orbwalk();
+                        
                         break;
                 }
-              //  CastWE();
-                Killsteal();
               
+                
+
+
             }
         }
 
@@ -199,7 +206,9 @@ namespace HuyNK_Series_SDK.Plugins
         private float GetComboDamage(Obj_AI_Hero Enemy)
         {
             return
-                (Q.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.Q) : 0);
+                (Q.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.Q) : 0)+
+            (W.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.W) : 0)+
+             (R.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.R) : 0); ;
         }
 
         private void Combo()
@@ -215,7 +224,7 @@ namespace HuyNK_Series_SDK.Plugins
             if (MenuProvider.MainMenu["Combo"]["UseW"].GetValue<MenuBool>().Value && W.isReadyPerfectly())
             {
                 if (!ObjectManager.Player.IsWindingUp)
-                    W.CastOnBestTarget(W.Width, true);
+                    CastBasicSkillShot(W, W.Range, TargetSelector.DamageType.Physical, HitChance.High);
             }
             if (MenuProvider.MainMenu["Combo"]["UseE"].GetValue<MenuBool>().Value && E.isReadyPerfectly())
               Cast_E();
@@ -235,7 +244,8 @@ namespace HuyNK_Series_SDK.Plugins
             if (MenuProvider.MainMenu["Harass"]["UseW"].GetValue<MenuBool>().Value && W.isReadyPerfectly())
             {
                 if (!ObjectManager.Player.IsWindingUp)
-                    W.CastOnBestTarget(W.Width,true);
+                    CastBasicSkillShot(W, W.Range, TargetSelector.DamageType.Physical, HitChance.High);
+                
             }
             if (MenuProvider.MainMenu["Harass"]["UseE"].GetValue<MenuBool>().Value && E.isReadyPerfectly())
                 E.CastOnBestTarget(E.Width, true);
@@ -319,6 +329,7 @@ namespace HuyNK_Series_SDK.Plugins
         }
         private void CastWE()
         {
+            
             if (W.IsReady() && E.IsReady())
             {
                 var vec = ObjectManager.Player.ServerPosition + Vector3.Normalize(Game.CursorPos - ObjectManager.Player.ServerPosition) * E.Range;
@@ -371,7 +382,18 @@ namespace HuyNK_Series_SDK.Plugins
                 
             }
         }
+        public static void CastBasicSkillShot(Spell spell, float range, TargetSelector.DamageType type, HitChance hitChance)
+        {
+            var target = TargetSelector.GetTarget(range, type);
 
-        
+            if (target == null || !spell.IsReady())
+                return;
+            spell.UpdateSourcePosition();
+
+            if (spell.GetPrediction(target).Hitchance >= hitChance)
+                spell.Cast(target);
+        }
+
+
     }
 }
