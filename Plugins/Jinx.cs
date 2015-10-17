@@ -74,7 +74,7 @@ namespace HuyNK_Series_SDK.Plugins
             HarassMenu.Add(new MenuBool("UseW", "Dùng W", true));
             //Đẩy đường
             Menu LaneClearMenu = new Menu("LaneClear", "Đẩy Đường");
-            LaneClearMenu.Add(new MenuSeparator("Qseparator", "Q"));
+           
             LaneClearMenu.Add(new MenuBool("UseQ", "Use Q", true));
             
 
@@ -190,16 +190,16 @@ namespace HuyNK_Series_SDK.Plugins
         {
             if (!ObjectManager.Player.IsDead)
             {
-                if (MenuProvider.MainMenu["Drawings"]["DrawQ"].GetValue<MenuBool>().Value && Q.isReadyPerfectly())
+            	if (_Getmenu.get_bool("Drawings","DrawQ") && Q.isReadyPerfectly())
                     Drawing.DrawCircle(GameObjects.Player.Position, Q.Range, Color.FromArgb(MenuProvider.MainMenu["Drawings"]["QColor"].GetValue<MenuColor>().Color.ToBgra()));
 
-                if (MenuProvider.MainMenu["Drawings"]["DrawW"].GetValue<MenuBool>().Value && W.isReadyPerfectly())
+            	if (_Getmenu.get_bool("Drawings","DrawW") && W.isReadyPerfectly())
                     Drawing.DrawCircle(GameObjects.Player.Position, W.Range, Color.FromArgb(MenuProvider.MainMenu["Drawings"]["WColor"].GetValue<MenuColor>().Color.ToBgra()));
 
-                if (MenuProvider.MainMenu["Drawings"]["DrawE"].GetValue<MenuBool>().Value && E.isReadyPerfectly())
+            	if (_Getmenu.get_bool("Drawings","DrawE") && E.isReadyPerfectly())
                     Drawing.DrawCircle(GameObjects.Player.Position, E.Range, Color.FromArgb(MenuProvider.MainMenu["Drawings"]["EColor"].GetValue<MenuColor>().Color.ToBgra()));
 
-                if (MenuProvider.MainMenu["Drawings"]["DrawR"].GetValue<MenuBool>().Value && R.isReadyPerfectly())
+            	if (_Getmenu.get_bool("Drawings","DrawR") && R.isReadyPerfectly())
                     Drawing.DrawCircle(GameObjects.Player.Position, R.Range, Color.FromArgb(MenuProvider.MainMenu["Drawings"]["RColor"].GetValue<MenuColor>().Color.ToBgra()));
             }
         }
@@ -207,27 +207,27 @@ namespace HuyNK_Series_SDK.Plugins
         private float GetComboDamage(Obj_AI_Hero Enemy)
         {
             return
-              //  (Q.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.Q) : 0)+
-         //   (W.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.W) : 0)+
+               (Q.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.Q) : 0)+
+         (W.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.W) : 0)+
              (R.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.R) : 0); ;
         }
 
         private void Combo()
         {
            
-            if (MenuProvider.MainMenu["Combo"]["UseQ"].GetValue<MenuBool>().Value)
+        	if (_Getmenu.get_bool("Combo","UseQ"))
             {
                 if (!ObjectManager.Player.IsWindingUp)
                 {
                     Cast_Q();
                 }
             }
-            if (MenuProvider.MainMenu["Combo"]["UseW"].GetValue<MenuBool>().Value && W.isReadyPerfectly())
+        	if (_Getmenu.get_bool("Combo","UseW") && W.isReadyPerfectly())
             {
                 if (!ObjectManager.Player.IsWindingUp)
                     CastBasicSkillShot(W, W.Range, TargetSelector.DamageType.Physical, HitChance.High);
             }
-            if (MenuProvider.MainMenu["Combo"]["UseE"].GetValue<MenuBool>().Value && E.isReadyPerfectly())
+            if (_Getmenu.get_bool("Combo","UseE") && E.isReadyPerfectly())
               Cast_E();
 
         }
@@ -236,44 +236,50 @@ namespace HuyNK_Series_SDK.Plugins
         {
           
             
-            if (MenuProvider.MainMenu["Harass"]["UseQ"].GetValue<MenuBool>().Value && Q.isReadyPerfectly())
+        	if (_Getmenu.get_bool("Harass","UseQ") && Q.isReadyPerfectly())
             {
                 if (!ObjectManager.Player.IsWindingUp)
                 {
                     Cast_Q();
                 }
             }
-            if (MenuProvider.MainMenu["Harass"]["UseW"].GetValue<MenuBool>().Value && W.isReadyPerfectly())
+        	 if (_Getmenu.get_bool("Harass","UseW") && W.isReadyPerfectly())
             {
                 if (!ObjectManager.Player.IsWindingUp)
                     CastBasicSkillShot(W, W.Range, TargetSelector.DamageType.Physical, HitChance.High);
                 
             }
-            if (MenuProvider.MainMenu["Harass"]["UseE"].GetValue<MenuBool>().Value && E.isReadyPerfectly())
+        	 if (_Getmenu.get_bool("Harass","UseE") && E.isReadyPerfectly())
                 E.CastOnBestTarget(E.Width, true);
         }
 
         private void LaneClear()
         {
-            var FarmLocation = W.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());
+        	if(_Getmenu.get_bool("LaneClear","UseQ"))
+        	{
+            	var FarmLocation = W.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());
 
-            if (FarmLocation.MinionsHit >= 5)
-               Q.Cast(FarmLocation.Position);
+           		 if (FarmLocation.MinionsHit >= 5)
+               		Q.Cast(FarmLocation.Position);
+        	}
         }
 
         private void JungleClear()
         {
-            var FarmLocation = W.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());
+            if(_Getmenu.get_bool("JungleClear","UseQ"))
+        	{
+            	var FarmLocation = W.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());
 
-            if (FarmLocation.MinionsHit >= 3)
-                Q.Cast(FarmLocation.Position);
+           		 if (FarmLocation.MinionsHit >= 5)
+               		Q.Cast(FarmLocation.Position);
+        	}
         }
 
         private void Killsteal()
         {
 
-            if (MenuProvider.MainMenu["Misc"]["UseKillsteal"].GetValue<MenuBool>().Value && R.isReadyPerfectly())
-                if (MenuProvider.MainMenu["Drawings"]["Draw_R_Killable"].GetValue<MenuBool>().Value)
+            if (_Getmenu.get_bool("Misc","UseKillsteal") && R.isReadyPerfectly())
+            	if (_Getmenu.get_bool("Drawings","Draw_R_Killable"))
                 {
                     
                     foreach (
@@ -353,7 +359,7 @@ namespace HuyNK_Series_SDK.Plugins
         }
         private void Cast_Q()
         {
-            var dungQ = MenuProvider.MainMenu["Combo"]["UseQ"].GetValue<MenuBool>().Value;
+        	var dungQ = _Getmenu.get_bool("Combo","UseQ");
             if (!Q.IsReady()) return;
             if (dungQ)
             {
