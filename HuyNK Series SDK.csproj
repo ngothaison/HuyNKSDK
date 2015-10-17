@@ -73,7 +73,7 @@
     <Compile Include="Plugins\_Draven.cs" />
     <Compile Include="Plugins\_Ezreal.cs" />
     <Compile Include="Plugins\_Graves.cs" />
-    <Compile Include="Plugins\_Jinx.cs" />
+    <Compile Include="Plugins\Jinx.cs" />
     <Compile Include="Plugins\Kalista.cs" />
     <Compile Include="Plugins\_KogMaw.cs" />
     <Compile Include="Plugins\_Lucian.cs" />
