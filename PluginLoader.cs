@@ -16,6 +16,7 @@ namespace HuyNK_Series_SDK
     {
         public static bool LoadPlugin(string PluginName)
         {
+            
             if (CanLoadPlugin(PluginName))
             {
                 Logging.Write()(LogLevel.Info, "HuyNK_Series_SDK: " + ObjectManager.Player.ChampionName + " is supported.");

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -158,11 +158,11 @@ namespace HuyNK_Series_SDK.Plugins
             
             //adjust range
                     if (Q.IsReady())
-                    Q.Range = MenuProvider.MainMenu["Keys"]["Q_Max_Range"].GetValue<MenuSlider>().Value;
+                    Q.Range = _Getmenu.get_slider("Keys", "Q_Max_Range");
                 if (W.IsReady())
-                    W.Range = MenuProvider.MainMenu["Keys"]["W_Max_Range"].GetValue<MenuSlider>().Value;
+                    W.Range = _Getmenu.get_slider("Keys", "W_Max_Range");
                 if (R.IsReady())
-                    R.Range = MenuProvider.MainMenu["Keys"]["R_Max_Range"].GetValue<MenuSlider>().Value;
+                    R.Range = _Getmenu.get_slider("Keys", "R_Max_Range");
                 Killsteal();
 
                 switch (Orbwalker.ActiveMode)
@@ -174,7 +174,8 @@ namespace HuyNK_Series_SDK.Plugins
                         Harass();
                         break;
                     case OrbwalkerMode.LaneClear:
-                       Orbwalker.Orbwalk();
+                       LaneClear();
+                        JungleClear();
                         
                         break;
                 }
@@ -206,8 +207,8 @@ namespace HuyNK_Series_SDK.Plugins
         private float GetComboDamage(Obj_AI_Hero Enemy)
         {
             return
-                (Q.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.Q) : 0)+
-            (W.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.W) : 0)+
+              //  (Q.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.Q) : 0)+
+         //   (W.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.W) : 0)+
              (R.isReadyPerfectly() ? (float)LeagueSharp.Common.Damage.GetSpellDamage(ObjectManager.Player, Enemy, SpellSlot.R) : 0); ;
         }
 
@@ -233,6 +234,7 @@ namespace HuyNK_Series_SDK.Plugins
 
         private void Harass()
         {
+          
             
             if (MenuProvider.MainMenu["Harass"]["UseQ"].GetValue<MenuBool>().Value && Q.isReadyPerfectly())
             {
@@ -253,12 +255,18 @@ namespace HuyNK_Series_SDK.Plugins
 
         private void LaneClear()
         {
-           
+            var FarmLocation = W.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());
+
+            if (FarmLocation.MinionsHit >= 5)
+               Q.Cast(FarmLocation.Position);
         }
 
         private void JungleClear()
         {
-            
+            var FarmLocation = W.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());
+
+            if (FarmLocation.MinionsHit >= 3)
+                Q.Cast(FarmLocation.Position);
         }
 
         private void Killsteal()
@@ -393,6 +401,7 @@ namespace HuyNK_Series_SDK.Plugins
             if (spell.GetPrediction(target).Hitchance >= hitChance)
                 spell.Cast(target);
         }
+        
 
 
     }
