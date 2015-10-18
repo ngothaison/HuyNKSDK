@@ -56,7 +56,7 @@ namespace MasterSharp
                 return;
             }
 
-            Game.PrintChat("MasterYi - by DeTuKs");
+            Game.PrintChat("MasterYi - by HuyNK ");
             MasterYi.SetSkillShots();
             try
             {
