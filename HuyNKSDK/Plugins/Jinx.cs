@@ -259,7 +259,7 @@ namespace HuyNK_Series_SDK.Plugins
         	{
             	var FarmLocation = W.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());
 
-           		 if (FarmLocation.MinionsHit >= 5)
+           		 if (FarmLocation.MinionsHit > 5)
                		Q.Cast(FarmLocation.Position);
         	}
         }
