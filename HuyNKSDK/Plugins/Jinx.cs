@@ -32,9 +32,8 @@ namespace HuyNK_Series_SDK.Plugins
         public Jinx()
         {
 
-            //Spell
             Q = new Spell(SpellSlot.Q, 725);
-            //Q.SetSkillshot(0.25f, 60f, 2000f, true, SkillshotType.SkillshotLine);
+         
 
             W = new Spell(SpellSlot.W, 1500f);
             W.SetSkillshot(0.6f, 60f, 3300f, true, SkillshotType.SkillshotLine);
@@ -59,7 +58,7 @@ namespace HuyNK_Series_SDK.Plugins
             Skill.Add(new MenuSlider("W_Max_Range", "W khi đủ tầm", 900, 500, 1500));
             Skill.Add(new MenuSlider("R_Min_Range", "Tầm đánh R nhỏ nhât", 300, 300, 1200));
             Skill.Add(new MenuSlider("R_Max_Range", "Tầm đánh R lớn nhất", 20000, 500, 20000));
-           // Skill.Add(new MenuKeyBind("Combo_WE", "Combo WE", Keys.E, KeyBindType.Press));
+            Skill.Add(new MenuKeyBind("Combo_WE", "Combo WE", Keys.E, KeyBindType.Press));
             // Combo
             Menu ComboMenu = new Menu("Combo", "Combo");
             ComboMenu.Add(new MenuBool("UseQ", "Dùng  Q", true));
@@ -153,18 +152,19 @@ namespace HuyNK_Series_SDK.Plugins
                 //check if player is dead
                 if (ObjectManager.Player.IsDead) return;
 
-             
-                
+
+              
             
             //adjust range
-                    if (Q.IsReady())
+                if (Q.IsReady())
                     Q.Range = _Getmenu.get_slider("Keys", "Q_Max_Range");
                 if (W.IsReady())
                     W.Range = _Getmenu.get_slider("Keys", "W_Max_Range");
                 if (R.IsReady())
                     R.Range = _Getmenu.get_slider("Keys", "R_Max_Range");
-                Killsteal();
+             //   IsCannon();
 
+                Killsteal();
                 switch (Orbwalker.ActiveMode)
                 {
                     case OrbwalkerMode.Orbwalk:
@@ -176,14 +176,13 @@ namespace HuyNK_Series_SDK.Plugins
                     case OrbwalkerMode.LaneClear:
                        LaneClear();
                         JungleClear();
-                        
                         break;
                 }
+
+               
               
-                
-
-
             }
+          
         }
 
         private void Game_OnDraw(EventArgs args)
@@ -214,53 +213,41 @@ namespace HuyNK_Series_SDK.Plugins
 
         private void Combo()
         {
+            
+             Cast_Q();
+          if (_Getmenu.get_bool("Combo","UseW") && W.isReadyPerfectly())
            
-        	if (_Getmenu.get_bool("Combo","UseQ"))
-            {
-                if (!ObjectManager.Player.IsWindingUp)
-                {
-                    Cast_Q();
-                }
-            }
-        	if (_Getmenu.get_bool("Combo","UseW") && W.isReadyPerfectly())
-            {
-                if (!ObjectManager.Player.IsWindingUp)
-                    CastBasicSkillShot(W, W.Range, TargetSelector.DamageType.Physical, HitChance.High);
-            }
-            if (_Getmenu.get_bool("Combo","UseE") && E.isReadyPerfectly())
-              Cast_E();
+             CastBasicSkillShot(W, W.Range, TargetSelector.DamageType.Physical, HitChance.High);
+
+            if (_Getmenu.get_bool("Combo", "UseE") && E.isReadyPerfectly())
+                E.CastOnBestTarget();
+
 
         }
 
         private void Harass()
         {
-          
+        
+                Cast_Q();
+           
+            if (_Getmenu.get_bool("Harass", "UseW") && W.IsReady())
             
-        	if (_Getmenu.get_bool("Harass","UseQ") && Q.isReadyPerfectly())
-            {
-                if (!ObjectManager.Player.IsWindingUp)
-                {
-                    Cast_Q();
-                }
-            }
-        	 if (_Getmenu.get_bool("Harass","UseW") && W.isReadyPerfectly())
-            {
-                if (!ObjectManager.Player.IsWindingUp)
-                    CastBasicSkillShot(W, W.Range, TargetSelector.DamageType.Physical, HitChance.High);
-                
-            }
-        	 if (_Getmenu.get_bool("Harass","UseE") && E.isReadyPerfectly())
+                CastBasicSkillShot(W, W.Range, TargetSelector.DamageType.Physical, HitChance.High);
+            
+            if (_Getmenu.get_bool("Harass", "UseE") && E.IsReady())
+            
                 E.CastOnBestTarget(E.Width, true);
+            
         }
 
         private void LaneClear()
         {
         	if(_Getmenu.get_bool("LaneClear","UseQ"))
         	{
-            	var FarmLocation = W.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());
+            	var FarmLocation = Q.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());
 
            		 if (FarmLocation.MinionsHit > 5)
-               		Q.Cast(FarmLocation.Position);
+                     Q.Cast(FarmLocation.Position);
         	}
         }
 
@@ -268,43 +255,39 @@ namespace HuyNK_Series_SDK.Plugins
         {
             if(_Getmenu.get_bool("JungleClear","UseQ"))
         	{
-            	var FarmLocation = W.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());
+            	var FarmLocation = Q.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());
 
-           		 if (FarmLocation.MinionsHit >= 5)
+           		 if (FarmLocation.MinionsHit > 5)
                		Q.Cast(FarmLocation.Position);
         	}
         }
 
         private void Killsteal()
         {
+            foreach (
+              var unit in
+                  ObjectManager.Get<Obj_AI_Hero>()
+                      .Where(x => x.IsValid && !x.IsDead && x.IsEnemy)
+                      .OrderBy(x => x.Health))
+            {
+                var health = unit.Health + unit.HPRegenRate * 3 + 25;
+              
+                if (Get_R_Dmg(unit) > health)
+                {
+                    Drawing.DrawText(Drawing.Width * 0.39f, Drawing.Height * 0.80f, Color.DeepPink,
+                    "[[TUONG DICH DANG IU ULTI DE GIET NGAY ]] ");
+                    Vector2 wts = Drawing.WorldToScreen(unit.Position);
 
-            if (_Getmenu.get_bool("Misc","UseKillsteal") && R.isReadyPerfectly())
-            	if (_Getmenu.get_bool("Drawings","Draw_R_Killable"))
+                    Drawing.DrawText(wts[0] - 20, wts[1], Color.Yellow, "  [[[(+KILL+)]]]");
+
+                    R.Cast(unit);
+                }
+            }
+         
+            	if (_Getmenu.get_bool("Misc","UseKillsteal") && R.isReadyPerfectly())
                 {
                     
-                    foreach (
-                    var unit in
-                        ObjectManager.Get<Obj_AI_Hero>()
-                            .Where(x => x.IsValid && !x.IsDead && x.IsEnemy)
-                            .OrderBy(x => x.Health))
-                    {
-                        var health = unit.Health + unit.HPRegenRate * 3 + 25;
-                        if (Get_R_Dmg(unit) + 300 > health)
-                        {
-                            Drawing.DrawText(Drawing.Width * 0.39f, Drawing.Height * 0.80f, Color.DarkOrange,
-                            "no con 300 mau, Ulti no khong dai ca ");
-                        }
-                        if (Get_R_Dmg(unit) > health)
-                        {
-                            Drawing.DrawText(Drawing.Width * 0.39f, Drawing.Height * 0.80f, Color.DarkOrange,
-                            " ULTI LA CHET CHAC  ");
-                            Vector2 wts = Drawing.WorldToScreen(unit.Position);
-                            
-                            Drawing.DrawText(wts[0] - 20, wts[1], Color.Red, "Muc tieu ne!!!");
-                        
-
-                        }
-                    }
+                   
 
                     foreach (
                 var unit in
@@ -314,7 +297,7 @@ namespace HuyNK_Series_SDK.Plugins
                     {
                         
                                 var health = unit.Health + unit.HPRegenRate * 3 + 25;
-                                if (Get_R_Dmg(unit) > health)
+                                if (Get_R_Dmg(unit) + 100 > health )
                                 {
                                     R.Cast(unit);
                                     return;
@@ -354,8 +337,8 @@ namespace HuyNK_Series_SDK.Plugins
         }
         private bool IsCannon()
         {
-         
-            return  ObjectManager.Player.AttackRange > 525;
+
+            return ObjectManager.Player.AttackRange > 525;
         }
         private void Cast_Q()
         {
