@@ -58,10 +58,11 @@ namespace HuyNK_Series_SDK.Plugins
             Skill.Add(new MenuSlider("W_Max_Range", "W khi đủ tầm", 900, 500, 1500));
             Skill.Add(new MenuSlider("R_Min_Range", "Tầm đánh R nhỏ nhât", 300, 300, 1200));
             Skill.Add(new MenuSlider("R_Max_Range", "Tầm đánh R lớn nhất", 20000, 500, 20000));
-            Skill.Add(new MenuKeyBind("Combo_WE", "Combo WE", Keys.E, KeyBindType.Press));
+            Skill.Add(new MenuKeyBind("Combo_WE", "Combo WE", Keys.E, KeyBindType.Press, "E"));
+            
             // Combo
             Menu ComboMenu = new Menu("Combo", "Combo");
-            ComboMenu.Add(new MenuBool("UseQ", "Dùng  Q", true));
+            ComboMenu.Add(new MenuBool("UseQ","Dùng Q",true));
             ComboMenu.Add(new MenuBool("UseW", "Dùng W", true));
             ComboMenu.Add(new MenuBool("UseE", "Dùng E", true));
             ComboMenu.Add(new MenuBool("UseR", "Dùng R", true));
@@ -162,25 +163,31 @@ namespace HuyNK_Series_SDK.Plugins
                     W.Range = _Getmenu.get_slider("Keys", "W_Max_Range");
                 if (R.IsReady())
                     R.Range = _Getmenu.get_slider("Keys", "R_Max_Range");
-             //   IsCannon();
-
+           
+             
                 Killsteal();
                 switch (Orbwalker.ActiveMode)
                 {
                     case OrbwalkerMode.Orbwalk:
                         Combo();
                         break;
-                    case OrbwalkerMode.Hybrid:
-                        Harass();
-                        break;
+                   case OrbwalkerMode.Hybrid:
+                      Harass();
+                      break;
                     case OrbwalkerMode.LaneClear:
-                       LaneClear();
-                        JungleClear();
+                       
+                      LaneClear();
+                      JungleClear();
                         break;
+                  
+
+                       
                 }
 
-               
-              
+                if (_Getmenu.get_bool("Keys", "Combo_WE"))
+                {
+                    CastWE();
+                }
             }
           
         }
@@ -242,24 +249,22 @@ namespace HuyNK_Series_SDK.Plugins
 
         private void LaneClear()
         {
-        	if(_Getmenu.get_bool("LaneClear","UseQ"))
-        	{
-            	var FarmLocation = Q.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());
-
-           		 if (FarmLocation.MinionsHit > 5)
-                     Q.Cast(FarmLocation.Position);
-        	}
+            var useQ = _Getmenu.get_bool("LaneClear","UseQ");
+            
+            if (useQ)
+            {
+              
+            }
         }
 
         private void JungleClear()
         {
-            if(_Getmenu.get_bool("JungleClear","UseQ"))
-        	{
-            	var FarmLocation = Q.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());
+            var useQ = _Getmenu.get_bool("LaneClear", "UseQ");
 
-           		 if (FarmLocation.MinionsHit > 5)
-               		Q.Cast(FarmLocation.Position);
-        	}
+            if (useQ)
+            {
+                Cast_Q();
+            }
         }
 
         private void Killsteal()
@@ -275,7 +280,7 @@ namespace HuyNK_Series_SDK.Plugins
                 if (Get_R_Dmg(unit) > health)
                 {
                     Drawing.DrawText(Drawing.Width * 0.39f, Drawing.Height * 0.80f, Color.DeepPink,
-                    "[[TUONG DICH DANG IU ULTI DE GIET NGAY ]] ");
+                    "[[TUONG DICH DANG YEU ULTI DE GIET NGAY ]] ");
                     Vector2 wts = Drawing.WorldToScreen(unit.Position);
 
                     Drawing.DrawText(wts[0] - 20, wts[1], Color.Yellow, "  [[[(+KILL+)]]]");
@@ -355,12 +360,12 @@ namespace HuyNK_Series_SDK.Plugins
 
                 if (IsCannon())
                 {
-                    if (distance <= 600)
+                    if (distance <= 600 || distance >1500)
                         Q.Cast();
                 }
                 else
                 {
-                    if (distance > 600)
+                    if (distance > 600 || distance < 1500)
                         Q.Cast();
                 }
             }

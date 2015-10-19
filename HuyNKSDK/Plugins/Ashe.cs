@@ -165,7 +165,7 @@ namespace HuyNK_Series_SDK.Plugins
 
         private void LaneClear()
         {
-            if (MenuProvider.MainMenu["LaneClear"]["UseW"].GetValue<MenuBool>().Value && W.isReadyPerfectly())
+            if (_Getmenu.get_bool("LaneClear","UseW") && W.isReadyPerfectly())
             {
                 //good than shit
                 var FarmLocation = W.GetLineFarmLocation(GameObjects.EnemyMinions.ToList<Obj_AI_Base>());

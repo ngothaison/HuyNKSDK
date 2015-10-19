@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A939D7AC-7C87-42F3-BC7C-23AC2AE0AF79}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HuyNK_Series_SDK</RootNamespace>
     <AssemblyName>HuyNK Series SDK</AssemblyName>
@@ -53,6 +53,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Fazie69-League-Of-Legends-Ezreal-TPA.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LeagueSharp">
