@@ -56,51 +56,51 @@ namespace MasterSharp
                 return;
             }
 
-            Game.PrintChat("MasterYi - by HuyNK ");
+            Game.PrintChat("MasterYi - VH and edit  by HuyNK ");
             MasterYi.SetSkillShots();
             try
             {
                 TargetedSkills.SetUpSkills();
 
                 Config = new Menu("MasterYi - Sharp", "MasterYi", true);
-                var orbwalkerMenu = new Menu("LX Orbwalker", "my_Orbwalker");
+                var orbwalkerMenu = new Menu("Thả diều", "my_Orbwalker");
                 LxOrbwalker.AddToMenu(orbwalkerMenu);
                 Config.AddSubMenu(orbwalkerMenu);
 
                 //TS
-                var targetSelectorMenu = new Menu("Target Selector", "Target Selector");
+                var targetSelectorMenu = new Menu("Chọn đối tượng", "Target Selector");
                 TargetSelector.AddToMenu(targetSelectorMenu);
                 Config.AddSubMenu(targetSelectorMenu);
 
                 //Combo
-                Config.AddSubMenu(new Menu("Combo Sharp", "combo"));
+                Config.AddSubMenu(new Menu("Chiến", "combo"));
                 Config.SubMenu("combo")
-                    .AddItem(new MenuItem("comboItems", "Meh everything is fine here"))
+                    .AddItem(new MenuItem("comboItems", "Chiến hết mình :))"))
                     .SetValue(true);
-                Config.SubMenu("combo").AddItem(new MenuItem("comboWreset", "AA reset W")).SetValue(true);
-                Config.SubMenu("combo").AddItem(new MenuItem("useQ", "Use Q to gap")).SetValue(true);
-                Config.SubMenu("combo").AddItem(new MenuItem("useE", "Use E")).SetValue(true);
-                Config.SubMenu("combo").AddItem(new MenuItem("useR", "Use R")).SetValue(true);
-                Config.SubMenu("combo").AddItem(new MenuItem("useSmite", "Use Smite")).SetValue(true);
+                Config.SubMenu("combo").AddItem(new MenuItem("comboWreset", "W AA đánh thường")).SetValue(true);
+                Config.SubMenu("combo").AddItem(new MenuItem("useQ", "Q né chiêu")).SetValue(true);
+                Config.SubMenu("combo").AddItem(new MenuItem("useE", "Dùng  E")).SetValue(true);
+                Config.SubMenu("combo").AddItem(new MenuItem("useR", "Dùng R")).SetValue(true);
+                Config.SubMenu("combo").AddItem(new MenuItem("useSmite", "Dùng Trừng phạt")).SetValue(true);
 
                 //Extra
-                Config.AddSubMenu(new Menu("Extra Sharp", "extra"));
-                Config.SubMenu("extra").AddItem(new MenuItem("packets", "Use Packet cast")).SetValue(false);
+                Config.AddSubMenu(new Menu("Mở rộng", "extra"));
+                Config.SubMenu("extra").AddItem(new MenuItem("packets", "Dùng Packet")).SetValue(false);
 
-                Config.AddSubMenu(new Menu("Anti Skillshots", "aShots"));
+                Config.AddSubMenu(new Menu("Né chiêu với W Hoặc Q", "aShots"));
 
                 //SmartW
-                Config.SubMenu("aShots").AddItem(new MenuItem("smartW", "Smart W if cantQ")).SetValue(true);
-                Config.SubMenu("aShots").AddItem(new MenuItem("smartQDogue", "Q use dogue")).SetValue(true);
-                Config.SubMenu("aShots").AddItem(new MenuItem("wqOnDead", "W or Q if will kill")).SetValue(false);
+                Config.SubMenu("aShots").AddItem(new MenuItem("smartW", "Tự động W nếu không thể Q")).SetValue(true);
+                Config.SubMenu("aShots").AddItem(new MenuItem("smartQDogue", "Dùng Q để né")).SetValue(true);
+                Config.SubMenu("aShots").AddItem(new MenuItem("wqOnDead", "W hoặc Q nếu giết được")).SetValue(false);
                 SkillShotMenuq = GetSkilshotMenuQ();
                 Config.SubMenu("aShots").AddSubMenu(SkillShotMenuq);
                 SkillShotMenuw = GetSkilshotMenuW();
                 Config.SubMenu("aShots").AddSubMenu(SkillShotMenuw);
 
                 //Debug
-                Config.AddSubMenu(new Menu("Drawing", "draw"));
-                Config.SubMenu("draw").AddItem(new MenuItem("drawCir", "Draw circles")).SetValue(true);
+                Config.AddSubMenu(new Menu("Hiển thị", "draw"));
+                Config.SubMenu("draw").AddItem(new MenuItem("drawCir", " Tầm đánh")).SetValue(true);
                 Config.SubMenu("draw")
                     .AddItem(new MenuItem("debugOn", "Debug stuff"))
                     .SetValue(new KeyBind('A', KeyBindType.Press));
