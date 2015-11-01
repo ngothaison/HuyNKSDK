@@ -158,8 +158,8 @@ namespace JeonUtility
 
             #region  menu for Jump2Ward
             baseMenu.AddSubMenu(menu_j2w);
-            menu_j2w.AddItem(new MenuItem("j2w_bool", "Cắm mắt nhảy").SetValue(true));
-            menu_j2w.AddItem(new MenuItem("j2w_hkey", "Phím : ").SetValue(new KeyBind('T', KeyBindType.Press)));
+            menu_j2w.AddItem(new MenuItem("j2w_bool", "Cắm mắt nhảy").SetValue(false));
+            menu_j2w.AddItem(new MenuItem("j2w_hkey", "Phím : ").SetValue(new KeyBind('G', KeyBindType.Press)));
             menu_j2w.AddItem(new MenuItem("j2w_info", "Thông tin").SetValue(false));
             #endregion
 
