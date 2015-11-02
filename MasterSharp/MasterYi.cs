@@ -1,9 +1,16 @@
 ﻿using System;
 using System.Linq;
-using LeagueSharp;
-using LeagueSharp.Common;
+
+using SharpDX;
 using MasterSharp.Evade;
 
+
+using System.Collections.Generic;
+using System.Windows.Forms;
+using LeagueSharp;
+using LeagueSharp.Common;
+
+using Color = System.Drawing.Color;
 namespace MasterSharp
 {
     internal class MasterYi
@@ -31,7 +38,30 @@ namespace MasterSharp
                 Smite = SpellSlot.Summoner2;
             }
         }
+        public static float Get_R_Dmg(Obj_AI_Hero target)
+        {
+            double dmg = 0;
 
+            dmg += ObjectManager.Player.GetSpellDamage(target, SpellSlot.Q);
+
+            var rPred = Q.GetPrediction(target);
+            var collisionCount = rPred.CollisionObjects.Count;
+
+            if (collisionCount >= 7)
+                dmg = dmg * .3;
+            else if (collisionCount != 0)
+                dmg = dmg * ((10 - collisionCount) / 10);
+
+          
+            return (float)dmg;
+        }
+
+
+            	
+                   
+
+                
+        
         public static void SlayMaderDuker(Obj_AI_Base target)
         {
             try
@@ -40,7 +70,7 @@ namespace MasterSharp
                 {
                     return;
                 }
-
+                UseQtoKill(target);
                 if (MasterSharp.Config.Item("useSmite").GetValue<bool>())
                 {
                     UseSmiteOnTarget(target);

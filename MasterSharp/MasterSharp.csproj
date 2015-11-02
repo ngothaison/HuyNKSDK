@@ -48,9 +48,6 @@
     <Reference Include="LeagueSharp.Common">
       <HintPath>..\HuyNKVN\System\LeagueSharp.Common.dll</HintPath>
     </Reference>
-    <Reference Include="LeagueSharp.SDK">
-      <HintPath>..\HuyNKVN\System\LeagueSharp.SDK.dll</HintPath>
-    </Reference>
     <Reference Include="SharpDX">
       <HintPath>..\HuyNKVN\System\SharpDX.dll</HintPath>
     </Reference>
