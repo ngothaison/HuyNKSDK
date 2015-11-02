@@ -1,4 +1,4 @@
-#region LICENSE
+﻿#region LICENSE
 
 /*
  Copyright 2014 - 2014 LeagueSharp
@@ -47,7 +47,7 @@ namespace LeagueSharp.Common
         /// <summary>
         /// The configuration
         /// </summary>
-        internal static Menu Config = new Menu("LeagueSharp.Common", "LeagueSharp.Common", true);
+        internal static Menu Config = new Menu("LeagueSharp.Common Việt Hóa by HuyNK", "LeagueSharp.Common", true);
 
         /// <summary>
         /// Initializes static members of the <see cref="CommonMenu"/> class.
@@ -753,18 +753,18 @@ namespace LeagueSharp.Common
         /// </summary>
         static Menu()
         {
-            root.AddItem(new MenuItem("BackgroundAlpha", "Background Opacity")).SetValue(new Slider(165, 55, 255));
+            root.AddItem(new MenuItem("BackgroundAlpha", "Độ trong suốt của nền")).SetValue(new Slider(165, 55, 255));
             root.AddItem(
-                new MenuItem("FontName", "Font Name:").SetValue(
+                new MenuItem("FontName", "Tên font chữ:").SetValue(
                     new StringList(new[] { "Tahoma", "Calibri", "Segoe UI" }, 0)));
-            root.AddItem(new MenuItem("FontSize", "Font Size:").SetValue(new Slider(13, 12, 20)));
+            root.AddItem(new MenuItem("FontSize", "Cỡ chữ:").SetValue(new Slider(13, 12, 20)));
             var qualities = Enum.GetValues(typeof(FontQuality)).Cast<FontQuality>().Select(v => v.ToString()).ToArray();
             root.AddItem(new MenuItem("FontQuality", "Font Quality").SetValue(new StringList(qualities, 4)));
             root.AddItem(
-                new MenuItem("LeagueSharp.Common.TooltipDuration", "Tooltip Notification Duration").SetValue(
+                new MenuItem("LeagueSharp.Common.TooltipDuration", "Trợ giúp thời gian thông báo").SetValue(
                     new Slider(1500, 0, 5000)));
             root.AddItem(
-                new MenuItem("FontInfo", "Press F5 after your change").SetFontStyle(FontStyle.Bold, SharpDX.Color.Yellow));
+                new MenuItem("FontInfo", "Bấm F5 sau khi thay đổi").SetFontStyle(FontStyle.Bold, SharpDX.Color.Yellow));
             CommonMenu.Config.AddSubMenu(root);
         }
 
