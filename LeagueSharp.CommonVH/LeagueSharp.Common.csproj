@@ -71,6 +71,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClipperLib">
+      <HintPath>..\..\..\..\Desktop\ClipperLib.dll</HintPath>
+    </Reference>
     <Reference Include="LeagueSharp">
       <HintPath>..\..\..\..\Desktop\HuyNKVN\System\LeagueSharp.dll</HintPath>
     </Reference>
