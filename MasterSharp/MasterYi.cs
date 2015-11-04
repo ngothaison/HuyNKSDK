@@ -1,42 +1,16 @@
 ﻿using System;
 using System.Linq;
 
-<<<<<<< HEAD
 using SharpDX;
 using MasterSharp.Evade;
 
 
-=======
-using MasterSharp.Evade;
-
-using System;
-using System.Linq;
->>>>>>> origin/master
 using System.Collections.Generic;
 using System.Windows.Forms;
 using LeagueSharp;
 using LeagueSharp.Common;
 
-<<<<<<< HEAD
 using Color = System.Drawing.Color;
-=======
-using LeagueSharp.SDK.Core;
-using LeagueSharp.SDK.Core.UI.IMenu.Values;
-using LeagueSharp.SDK.Core.Enumerations;
-using LeagueSharp.SDK.Core.Extensions;
-using LeagueSharp.SDK.Core.Utils;
-using LeagueSharp.SDK.Core.Extensions.SharpDX;
-
-using Collision = LeagueSharp.SDK.Core.Math.Collision;
-using Color = System.Drawing.Color;
-
-using SharpDX;
-using HitChance = LeagueSharp.SDK.Core.Enumerations.HitChance;
-using KeyBindType = LeagueSharp.SDK.Core.Enumerations.KeyBindType;
-using Menu = LeagueSharp.SDK.Core.UI.IMenu.Menu;
-using SkillshotType = LeagueSharp.SDK.Core.Enumerations.SkillshotType;
-using Spell = LeagueSharp.SDK.Core.Wrappers.Spell;
->>>>>>> origin/master
 namespace MasterSharp
 {
     internal class MasterYi
@@ -64,11 +38,7 @@ namespace MasterSharp
                 Smite = SpellSlot.Summoner2;
             }
         }
-<<<<<<< HEAD
         public static float Get_R_Dmg(Obj_AI_Hero target)
-=======
-         private float Get_R_Dmg(Obj_AI_Hero target)
->>>>>>> origin/master
         {
             double dmg = 0;
 
@@ -85,7 +55,6 @@ namespace MasterSharp
           
             return (float)dmg;
         }
-<<<<<<< HEAD
 
 
             	
@@ -93,53 +62,6 @@ namespace MasterSharp
 
                 
         
-=======
-
-public static void Killsteal()
-        {
-            foreach (
-              var unit in
-                  ObjectManager.Get<Obj_AI_Hero>()
-                      .Where(x => x.IsValid && !x.IsDead && x.IsEnemy)
-                      .OrderBy(x => x.Health))
-            {
-                var health = unit.Health + unit.HPRegenRate * 3 + 25;
-              
-                if (Get_R_Dmg(unit) > health)
-                {
-                    Drawing.DrawText(Drawing.Width * 0.39f, Drawing.Height * 0.80f, Color.DeepPink,
-                    "[[TUONG DICH DANG YEU ULTI DE GIET NGAY ]] ");
-                    Vector2 wts = Drawing.WorldToScreen(unit.Position);
-
-                    Drawing.DrawText(wts[0] - 20, wts[1], Color.Yellow, "  [[[(+KILL+)]]]");
-
-                    R.Cast(unit);
-                }
-            }
-         
-            	if (_Getmenu.get_bool("Misc","UseKillsteal") && R.isReadyPerfectly())
-                {
-                    
-                   
-
-                    foreach (
-                var unit in
-                    ObjectManager.Get<Obj_AI_Hero>()
-                        .Where(x => x.IsTargetable && !x.IsDead && x.IsEnemy)
-                        .OrderBy(x => x.Health))
-                    {
-                        
-                                var health = unit.Health + unit.HPRegenRate * 3 + 25;
-                                if (Get_R_Dmg(unit) + 100 > health )
-                                {
-                                    Q.Cast(unit);
-                                    return;
-                                }
-                         
-                    }
-                }
-        }
->>>>>>> origin/master
         public static void SlayMaderDuker(Obj_AI_Base target)
         {
             try
@@ -148,11 +70,7 @@ public static void Killsteal()
                 {
                     return;
                 }
-<<<<<<< HEAD
                 UseQtoKill(target);
-=======
-                    Killsteal();
->>>>>>> origin/master
                 if (MasterSharp.Config.Item("useSmite").GetValue<bool>())
                 {
                     UseSmiteOnTarget(target);
