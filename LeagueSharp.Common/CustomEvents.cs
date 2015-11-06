@@ -296,5 +296,3 @@ namespace LeagueSharp.Common
         }
     }
 }
-
-Bạn nghĩ gì về ảnh này?
