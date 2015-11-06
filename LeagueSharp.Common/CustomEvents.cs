@@ -1,4 +1,4 @@
-﻿#region LICENSE
+#region LICENSE
 
 /*
  Copyright 2014 - 2014 LeagueSharp
@@ -112,14 +112,14 @@ namespace LeagueSharp.Common
                         .Where(s => !NotifiedSubscribers.Contains(s)))
                     {
                         NotifiedSubscribers.Add(subscriber);
-                         try
-+                        {
-+                            subscriber.DynamicInvoke(new EventArgs());
-+                        }
-+                        catch (Exception ex)
-+                        {
-+                            Console.WriteLine(ex);
-+                        }
+                        try
+                        {
+                            subscriber.DynamicInvoke(new EventArgs());
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                        }
                     }
                 }
 
@@ -163,19 +163,19 @@ namespace LeagueSharp.Common
 
                 if (OnGameLoad != null)
                 {
-                   foreach (var subscriber in OnGameLoad.GetInvocationList()
-+                        .Where(s => !NotifiedSubscribers.Contains(s)))
-+                    {
-+                        NotifiedSubscribers.Add(subscriber);
-+                        try
-+                        {
-+                            subscriber.DynamicInvoke(new EventArgs());
-+                        }
-+                        catch (Exception ex)
-+                        {
-+                            Console.WriteLine(ex);
-+                        }
-+                    }
+                    foreach (var subscriber in OnGameLoad.GetInvocationList()
+                        .Where(s => !NotifiedSubscribers.Contains(s)))
+                    {
+                        NotifiedSubscribers.Add(subscriber);
+                        try
+                        {
+                            subscriber.DynamicInvoke(new EventArgs());
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                        }
+                    }
                 }
             }
         }
@@ -296,3 +296,5 @@ namespace LeagueSharp.Common
         }
     }
 }
+
+Bạn nghĩ gì về ảnh này?
