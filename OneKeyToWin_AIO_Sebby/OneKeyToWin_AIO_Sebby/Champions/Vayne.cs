@@ -44,14 +44,14 @@ namespace OneKeyToWin_AIO_Sebby
         }
         private void LoadMenuOKTW()
         {
-            Config.SubMenu(Player.ChampionName).SubMenu("Draw").AddItem(new MenuItem("onlyRdy", "Draw only ready spells", true).SetValue(true));
-            Config.SubMenu(Player.ChampionName).SubMenu("Draw").AddItem(new MenuItem("qRange", "Q range", true).SetValue(false));
-            Config.SubMenu(Player.ChampionName).SubMenu("Draw").AddItem(new MenuItem("eRange2", "E push position", true).SetValue(false));
+            Config.SubMenu(Player.ChampionName).SubMenu("Hiển thị").AddItem(new MenuItem("onlyRdy", " Tầm đánh những chiêu đã hồi", true).SetValue(true));
+            Config.SubMenu(Player.ChampionName).SubMenu("Hiển thị").AddItem(new MenuItem("qRange", "Tầm đánh Q", true).SetValue(false));
+            Config.SubMenu(Player.ChampionName).SubMenu("Hiển thị").AddItem(new MenuItem("eRange2", "Tầm đánh E choáng", true).SetValue(false));
 
-            Config.SubMenu(Player.ChampionName).SubMenu("Q config").AddItem(new MenuItem("autoQ", "Auto Q", true).SetValue(true));
-            Config.SubMenu(Player.ChampionName).SubMenu("Q config").AddItem(new MenuItem("farmQ", "Q farm helper", true).SetValue(true));
-            Config.SubMenu(Player.ChampionName).SubMenu("Q config").AddItem(new MenuItem("QE", "try Q + E ", true).SetValue(true));
-            Config.SubMenu(Player.ChampionName).SubMenu("Q config").AddItem(new MenuItem("Qonly", "Q only after AA", true).SetValue(false));
+            Config.SubMenu(Player.ChampionName).SubMenu("Tùy chỉnh Q").AddItem(new MenuItem("autoQ", "Tự động Q", true).SetValue(true));
+            Config.SubMenu(Player.ChampionName).SubMenu("Tùy chỉnh Q").AddItem(new MenuItem("farmQ", "Q khi farm", true).SetValue(true));
+            Config.SubMenu(Player.ChampionName).SubMenu("Tùy chỉnh Q").AddItem(new MenuItem("QE", "Thử dùng Q + E ", true).SetValue(true));
+            Config.SubMenu(Player.ChampionName).SubMenu("Tùy chỉnh Q").AddItem(new MenuItem("Qonly", "Chỉ Q sau khi đánh thường", true).SetValue(false));
 
             Config.SubMenu(Player.ChampionName).SubMenu("GapCloser").AddItem(new MenuItem("gapQ", "Q", true).SetValue(true));
             Config.SubMenu(Player.ChampionName).SubMenu("GapCloser").AddItem(new MenuItem("gapE", "E", true).SetValue(true));
